@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5878381B-BDEC-45C9-B449-57DBD41D94F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uhlig.game.api", "src\uhlig.game.api\uhlig.game.api.csproj", "{81566DED-63F9-46F0-8524-911F7548E005}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81566DED-63F9-46F0-8524-911F7548E005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81566DED-63F9-46F0-8524-911F7548E005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81566DED-63F9-46F0-8524-911F7548E005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81566DED-63F9-46F0-8524-911F7548E005}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81566DED-63F9-46F0-8524-911F7548E005} = {5878381B-BDEC-45C9-B449-57DBD41D94F1}
+	EndGlobalSection
+EndGlobal
