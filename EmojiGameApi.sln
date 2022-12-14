@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uhlig.game.domain", "src\uh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uhlig.game.services", "src\uhlig.game.services\uhlig.game.services.csproj", "{BDBBA657-9AAC-4887-967B-EC2092326E4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uhlig.game.infra.crosscutting", "src\uhlig.game.infra.crosscutting\uhlig.game.infra.crosscutting.csproj", "{4805A571-E640-47E3-BC64-7DFA9FD13F42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,11 +42,16 @@ Global
 		{BDBBA657-9AAC-4887-967B-EC2092326E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDBBA657-9AAC-4887-967B-EC2092326E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDBBA657-9AAC-4887-967B-EC2092326E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4805A571-E640-47E3-BC64-7DFA9FD13F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4805A571-E640-47E3-BC64-7DFA9FD13F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4805A571-E640-47E3-BC64-7DFA9FD13F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4805A571-E640-47E3-BC64-7DFA9FD13F42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{81566DED-63F9-46F0-8524-911F7548E005} = {5878381B-BDEC-45C9-B449-57DBD41D94F1}
 		{5ED7699A-4704-4C02-A50B-84E7D612E095} = {57209477-1D10-41DC-BAA5-FF5A339107D4}
 		{BAD47595-7E33-45FB-BF38-46B5B46F8B6B} = {5878381B-BDEC-45C9-B449-57DBD41D94F1}
 		{BDBBA657-9AAC-4887-967B-EC2092326E4B} = {5878381B-BDEC-45C9-B449-57DBD41D94F1}
+		{4805A571-E640-47E3-BC64-7DFA9FD13F42} = {5878381B-BDEC-45C9-B449-57DBD41D94F1}
 	EndGlobalSection
 EndGlobal

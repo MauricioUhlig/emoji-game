@@ -1,16 +1,16 @@
 using uhlig.game.domain.Util;
 
-namespace uhlig.game.test;
+namespace uhlig.game.test.Domain;
 
-public class EmojiTest
+public class EmojiUtilTest
 {
     [Fact]
     public void TestGetRand()
     {
         // Arrange
-        var emojis = new Emojis();
+        //var emojis = new Emojis();
         // Act
-        var emoji = emojis.GetRand();
+        var emoji = Emojis.GetRand();
         // Assert 
         Assert.NotNull(emoji);
         Assert.NotEmpty(emoji);
