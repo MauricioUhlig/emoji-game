@@ -1,18 +1,15 @@
 namespace uhlig.game.domain.Entities
 {
-    public class RoundEntity
+    public class RoundEntity : BaseEntity
     {
-        public Guid Id { get; private set; }
         public Guid RoomId { get; private set; }
         public IEnumerable<Guid> PlayersId { get; private set; }
         public string Emojis { get; private set; }
         public DateTime StartAt { get; private set; }
         public byte TotalSeconds { get; private set; }
 
-        public RoundEntity(Guid roomId, IEnumerable<Guid> playersId, string emojis, byte totalSeconds)
+        public RoundEntity(Guid roomId, IEnumerable<Guid> playersId, string emojis, byte totalSeconds) : base()
         {
-            Id = Guid.NewGuid();
-
             RoomId = roomId;
             PlayersId = playersId;
             Emojis = emojis;

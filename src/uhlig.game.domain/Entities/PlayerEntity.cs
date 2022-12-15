@@ -1,15 +1,12 @@
 namespace uhlig.game.domain.Entities
 {
-    public class PlayerEntity
+    public class PlayerEntity : BaseEntity
     {
-        public Guid Id { get; private set; }
         public string Name { get; private set; }
         public int Score { get; private set; }
 
-        public PlayerEntity(string name)
+        public PlayerEntity(string name) : base()
         {
-            Id = Guid.NewGuid();
-
             Name = name;
 
             Score = 0;

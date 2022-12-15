@@ -1,18 +1,15 @@
 using uhlig.game.domain.Util;
 namespace uhlig.game.domain.Entities
 {
-    public class RoomEntity
+    public class RoomEntity : BaseEntity
     {
-        public Guid Id { get; private set; }
         public string Code { get; private set; }
         public bool IsPublic { get; private set; }
 
-        public RoomEntity(bool isPublic, byte codeLength = 4)
+        public RoomEntity(bool isPublic, byte codeLength = 4) : base()
         {
-            Id = Guid.NewGuid();
-
             IsPublic = isPublic;
-            
+
             Code = NewCode(codeLength);
         }
 
