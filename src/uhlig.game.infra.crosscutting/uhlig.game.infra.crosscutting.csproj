@@ -3,9 +3,11 @@
   <ItemGroup>
     <ProjectReference Include="..\uhlig.game.domain\uhlig.game.domain.csproj" />
     <ProjectReference Include="..\uhlig.game.services\uhlig.game.services.csproj" />
+    <ProjectReference Include="..\uhlig.game.infra.data\uhlig.game.infra.data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
   </ItemGroup>

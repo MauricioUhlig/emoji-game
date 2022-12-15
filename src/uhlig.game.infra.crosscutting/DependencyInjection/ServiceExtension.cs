@@ -2,8 +2,9 @@ using Microsoft.Extensions.Configuration;
 
 using uhlig.game.domain.Interfaces.Services;
 using uhlig.game.services.Services;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace uhlig.game.infra.crosscutting.DependencyInjection
 {
     public static class ServiceExtension
     {

@@ -11,4 +11,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\uhlig.game.infra.crosscutting\uhlig.game.infra.crosscutting.csproj" />
+  </ItemGroup>
+
 </Project>

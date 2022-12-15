@@ -4,10 +4,9 @@ namespace uhlig.game.infra.data.Context
 {
     public class EmojiGameContext : DbContext
     {
-        protected override void OnConfiguring
-       (DbContextOptionsBuilder optionsBuilder)
+
+        public EmojiGameContext(DbContextOptions options) : base(options)
         {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "EmojiGame");
         }
 
 #nullable disable

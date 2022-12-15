@@ -1,5 +1,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
+using uhlig.game.infra.crosscutting.DependencyInjection;
 
 namespace uhlig.game.test
 {
