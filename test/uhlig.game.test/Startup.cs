@@ -8,6 +8,8 @@ namespace uhlig.game.test
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbConfiguration();
+            services.AddRepository();
             services.AddServices();
         }
     }
