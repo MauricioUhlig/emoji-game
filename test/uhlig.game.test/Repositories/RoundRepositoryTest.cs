@@ -3,10 +3,10 @@ using uhlig.game.domain.Entities;
 
 namespace uhlig.game.test.Repositories;
 
-public class BaseRepositoryTest
+public class RoundRepositoryTest
 {
     private readonly IBaseRepository<RoundEntity> _repository;
-    public BaseRepositoryTest(IBaseRepository<RoundEntity> repository)
+    public RoundRepositoryTest(IBaseRepository<RoundEntity> repository)
     {
         _repository = repository;
     }
@@ -55,6 +55,6 @@ public class BaseRepositoryTest
 
         //Assert
         Assert.NotNull(rounds);
-        Assert.Equal(1, rounds.Count());
+        Assert.Single(rounds);
     }
 }
