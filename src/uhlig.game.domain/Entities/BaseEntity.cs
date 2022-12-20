@@ -11,5 +11,9 @@ namespace uhlig.game.domain.Entities
         {
             Id = Guid.NewGuid();
         }
+        public BaseEntity(Guid id)
+        {
+            Id = id;
+        }
     }
 }

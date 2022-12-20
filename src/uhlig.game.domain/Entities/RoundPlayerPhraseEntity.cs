@@ -2,18 +2,25 @@ namespace uhlig.game.domain.Entities
 {
     public class RoundPlayerPhraseEntity : BaseEntity
     {
-        public Guid RoundId { get; private set; }
-        public Guid PlayerId { get; private set; }
+        public Guid RoundPlayerId { get; private set; }
         public DateTime When { get; private set; }
         public string Phrase { get; set; }
 
-        public RoundPlayerPhraseEntity(Guid roundId, Guid playerId, string phrase) : base()
+        public RoundPlayerEntity? RoundPlayer { get; set; }
+
+        public RoundPlayerPhraseEntity(Guid roundPlayerId, string phrase) : base()
         {
-            RoundId = roundId;
-            PlayerId = playerId;
+            RoundPlayerId = roundPlayerId;
             Phrase = phrase;
 
             When = DateTime.UtcNow;
+        }
+        public RoundPlayerPhraseEntity(Guid id, Guid roundPlayerId, string phrase, DateTime when) : base(id)
+        {
+            RoundPlayerId = roundPlayerId;
+            Phrase = phrase;
+
+            When = when;
         }
     }
 }

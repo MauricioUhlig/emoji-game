@@ -12,6 +12,11 @@ namespace uhlig.game.domain.Entities
 
             Code = NewCode(codeLength);
         }
+        public RoomEntity(Guid id, string code, bool isPublic) : base(id)
+        {
+            Code = code;
+            IsPublic = isPublic;
+        }
 
         private string NewCode(byte codeLength)
         {

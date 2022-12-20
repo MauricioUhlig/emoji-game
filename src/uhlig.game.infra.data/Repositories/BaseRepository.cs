@@ -13,6 +13,7 @@ namespace uhlig.game.infra.data.Repositories
         public BaseRepository(EmojiGameContext context)
         {
             _context = context;
+            _context.Database.EnsureCreated();
             Set = context.Set<T>();
         }
 
@@ -31,10 +32,10 @@ namespace uhlig.game.infra.data.Repositories
         public void Delete(Guid id)
         {
             var entity = this.Set.Find(id);
-            
-            #nullable disable
+
+#nullable disable
             this.Delete(entity);
-            #nullable enable
+#nullable enable
         }
         public T? GetById(Guid id)
         {
