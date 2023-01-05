@@ -10,6 +10,7 @@ namespace uhlig.game.infra.crosscutting.DependencyInjection
         {
             services.AddScoped<IEmojiService, EmojiService>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IRoundService, RoundService>();
 
             return services;
         }
