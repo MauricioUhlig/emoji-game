@@ -21,9 +21,10 @@ namespace uhlig.game.services.Services
 
         public NewGameResponseViewModel JoinGame(JoinRoomRequestViewModel joinRoom)
         {
-            //var room = _roomRepository.GetByExpression(x => x.Code = joinRoom.RoomCode);
+            var room = _roomRepository.GetByExpression(x => x.Code == joinRoom.RoomCode)?.FirstOrDefault();
 
-            var room = _roomRepository.GetAll()?.FirstOrDefault();
+            if (room == null)
+                throw new ArgumentNullException($"Sala de código {joinRoom.RoomCode} não encontrado");
 
             var player = new PlayerEntity(joinRoom.UserName);
             _playerRepository.Insert(player);
@@ -44,7 +45,14 @@ namespace uhlig.game.services.Services
 
         public NewGameResponseViewModel RandomGame(RandomRoomRequestViewModel randomRoom)
         {
-            throw new NotImplementedException();
+            var room = _roomRepository.GetByExpression(x => x.IsPublic == true)?.FirstOrDefault();
+            if (room == null)
+                throw new ArgumentNullException($"Nenhuma sala publica encontrada!");
+
+            var player = new PlayerEntity(randomRoom.UserName);
+            _playerRepository.Insert(player);
+
+            return new NewGameResponseViewModel(room.Id, player.Id, room.Code);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace uhlig.game.infra.data.Repositories
         {
             return Set.AsEnumerable();
         }
-        public IEnumerable<T> GetByExpression(Expression<Func<BaseEntity, bool>> predicate)
+        public IEnumerable<T> GetByExpression(Expression<Func<T, bool>> predicate)
         {
             return (IEnumerable<T>)Set.AsNoTracking().Where(predicate).ToList();
         }

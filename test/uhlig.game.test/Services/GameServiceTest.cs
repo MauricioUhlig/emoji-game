@@ -19,18 +19,24 @@ public class GameServiceTest
         var game = _gameService.NewGame(room);
         // Assert 
         Assert.NotNull(game);
-        
+
     }
-    [Fact]
-    public void TestJoinGame()
+    [Theory]
+    [InlineData("Mauricio", "code", true)]
+    [InlineData("Mauricio", "c404", false)]
+    public void TestJoinGame(string name, string code, bool exists)
     {
         // Arrange
-        var room = new JoinRoomRequestViewModel("Mauricio", "teste");
+        var room = new JoinRoomRequestViewModel(name, code);
         // Act
-        var game = _gameService.JoinGame(room);
-        // Assert 
-        Assert.NotNull(game);
-        
+        if (exists)
+        {
+            var game = _gameService.JoinGame(room);
+            // Assert 
+            Assert.NotNull(game);
+        }
+        else
+            Assert.Throws<ArgumentNullException>(() => _gameService.JoinGame(room));
     }
     [Fact]
     public void TestRandomGame()
@@ -41,6 +47,6 @@ public class GameServiceTest
         var game = _gameService.RandomGame(room);
         // Assert 
         Assert.NotNull(game);
-        
+
     }
 }

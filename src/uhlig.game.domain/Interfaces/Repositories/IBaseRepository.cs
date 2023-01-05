@@ -10,6 +10,6 @@ namespace uhlig.game.domain.Interfaces.Repositories
         void Delete(Guid id);
         T? GetById(Guid id);
         IEnumerable<T>? GetAll();
-        IEnumerable<T>? GetByExpression(Expression<Func<BaseEntity, bool>> predicate);
+        IEnumerable<T>? GetByExpression(Expression<Func<T, bool>> predicate);
     }
 }
