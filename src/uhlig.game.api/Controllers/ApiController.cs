@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 namespace uhlig.game.api.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public abstract class ApiController : ControllerBase
     {
 
@@ -39,13 +38,13 @@ namespace uhlig.game.api.Controllers
         protected static IActionResult ResultOk<TData>(TData data, IEnumerable<string> messages)
             where TData : class
         {
-            return new JsonResult(new ResultJson(true, data, messages));
+            return new JsonResult(new ResultJson(data/*, messages*/));
         }
 
         protected static IActionResult ResultOk<TData>(TData data)
             where TData : class
         {
-            return new JsonResult(new ResultJson(true, data));
+            return new JsonResult(new ResultJson(data));
         }
 
         private IActionResult ResultErro(IEnumerable<string> messages)
@@ -56,15 +55,15 @@ namespace uhlig.game.api.Controllers
         private IActionResult ResultErro<TData>(TData data, IEnumerable<string> messages)
             where TData : class
         {
-            return Result((int)HttpStatusCode.BadRequest,data, messages);
+            return Result((int)HttpStatusCode.BadRequest, data, messages);
         }
         private IActionResult Result<TData>(int statusCode, TData data, IEnumerable<string> messages)
             where TData : class
         {
-            var result = new JsonResult(new ResultJson(false, data, messages.Distinct()));
+            var result = new JsonResult(new ResultJson(data/*, messages.Distinct()*/));
             result.StatusCode = statusCode;
             return result;
-            
+
         }
 
         #region private
@@ -86,19 +85,16 @@ namespace uhlig.game.api.Controllers
 
     public class ResultJson
     {
-        public bool Success { get; set; }
         public object Data { get; set; }
-        public IEnumerable<string>? Errors { get; set; }
+        public Dictionary<byte,string>? Errors { get; set; }
 
-        public ResultJson(bool success, object data, IEnumerable<string> errors)
+        public ResultJson(object data, Dictionary<byte,string> errors)
         {
-            this.Success = success;
             this.Data = data;
             this.Errors = errors;
         }
-        public ResultJson(bool success, object data)
+        public ResultJson(object data)
         {
-            this.Success = success;
             this.Data = data;
         }
     }
