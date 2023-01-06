@@ -1,3 +1,5 @@
+using uhlig.game.domain.Entities;
+
 namespace uhlig.game.domain.ViewModels.Round.Response
 {
     public class RoundResponseViewModel
@@ -16,6 +18,14 @@ namespace uhlig.game.domain.ViewModels.Round.Response
 
             StartAt = startAt;
             TotalSeconds = totalSeconds;
+        }
+        public RoundResponseViewModel(RoundEntity round)
+        {
+            Id = round.Id;
+            RoomId = round.RoomId;
+            Emojis = round.Emojis;
+            StartAt = round.StartAt;
+            TotalSeconds = round.TotalSeconds;
         }
     }
 }

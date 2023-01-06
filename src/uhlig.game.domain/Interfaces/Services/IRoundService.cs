@@ -7,7 +7,7 @@ namespace uhlig.game.domain.Interfaces.Services
     public interface IRoundService
     {
         public RoundResponseViewModel GetLastRoundByRoomId(Guid roomId);
-        public string CreateNewRoundByRoomId(Guid roomId);
+        public RoundResponseViewModel CreateNewRoundByRoomId(Guid roomId);
         public string GetAllRoundsByRoomId(Guid roomId);
         public string RoundResult(Guid id);
         public string Submit(NewPhraseRequestViewModel submit);

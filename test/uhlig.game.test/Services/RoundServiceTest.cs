@@ -14,22 +14,29 @@ public class RoundServiceTest
     public void TestNewRound()
     {
         // Arrange
-        var roomId = Guid.Empty;
+        var roomId = new Guid("b5212d38-9600-47c6-a5ab-8a7e7d2b3421");
         // Act
         var round = _roundService.CreateNewRoundByRoomId(roomId);
         // Assert 
         Assert.NotNull(round);
     }
-    [Fact]
-    public void TestGetLastRoundByRoomId()
+    [Theory]
+    [InlineData("b5212d38-9600-47c6-a5ab-8a7e7d2b3421", true)]
+    [InlineData("b5212d38-9600-47c6-0000-8a7e7d2b3421", false)]
+    public void TestGetLastRoundByRoomId(Guid id, bool exists)
     {
         // Arrange
-        var roomId = Guid.Empty;
+
         // Act
-        var round = _roundService.GetLastRoundByRoomId(roomId);
-        // Assert 
-        Assert.NotNull(round);
-        Assert.NotEmpty(round.Emojis);
+        if (exists)
+        {
+            var round = _roundService.GetLastRoundByRoomId(id);
+            // Assert 
+            Assert.NotNull(round);
+            Assert.NotEmpty(round.Emojis);
+        }
+        else
+            Assert.Throws<ArgumentNullException>(() => _roundService.GetLastRoundByRoomId(id));
     }
     [Fact]
     public void TestGetAllRoundsByRoomId()
