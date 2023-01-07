@@ -41,6 +41,7 @@ namespace uhlig.game.infra.data.Repositories
         {
             return Set.Find(id);
         }
+        public bool Exists(Guid id) => Set.Any(x => x.Id == id);
         public IEnumerable<T>? GetAll()
         {
             return Set.AsEnumerable();
@@ -49,5 +50,6 @@ namespace uhlig.game.infra.data.Repositories
         {
             return (IEnumerable<T>)Set.AsNoTracking().Where(predicate).ToList();
         }
+
     }
 }

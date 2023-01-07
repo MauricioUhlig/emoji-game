@@ -29,6 +29,13 @@ namespace uhlig.game.api.Controllers
         {
             return Result(_roundService.GetAllRoundsByRoomId(roomId));
         }
+        
+        [HttpGet("{id:guid}/phrases")]
+        public IActionResult RoundPhrases(Guid id)
+        {
+            return Result(_roundService.RoundPhrases(id));
+        }
+
         [HttpGet("{id:guid}/result")]
         public IActionResult RoundResult(Guid id)
         {

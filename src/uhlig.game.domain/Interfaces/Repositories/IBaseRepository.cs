@@ -9,6 +9,7 @@ namespace uhlig.game.domain.Interfaces.Repositories
         void Delete(T entity);
         void Delete(Guid id);
         T? GetById(Guid id);
+        bool Exists(Guid id);
         IEnumerable<T>? GetAll();
         IEnumerable<T>? GetByExpression(Expression<Func<T, bool>> predicate);
     }

@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System;
+using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace uhlig.game.api.Controllers
 {
@@ -86,6 +89,7 @@ namespace uhlig.game.api.Controllers
     public class ResultJson
     {
         public object Data { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public Dictionary<byte,string>? Errors { get; set; }
 
         public ResultJson(object data, Dictionary<byte,string> errors)

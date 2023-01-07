@@ -8,8 +8,10 @@ namespace uhlig.game.domain.Interfaces.Services
     {
         public RoundResponseViewModel GetLastRoundByRoomId(Guid roomId);
         public RoundResponseViewModel CreateNewRoundByRoomId(Guid roomId);
-        public string GetAllRoundsByRoomId(Guid roomId);
-        public string RoundResult(Guid id);
-        public string Submit(NewPhraseRequestViewModel submit);
+        public RoundListResponseViewModel GetAllRoundsByRoomId(Guid roomId);
+        
+        public RoundPhrasesResponseViewModel RoundPhrases(Guid id);
+        public RoundResultResponseViewModel RoundResult(Guid id);
+        public SubmitResponseViewModel Submit(NewPhraseRequestViewModel submit);
     }
 }
