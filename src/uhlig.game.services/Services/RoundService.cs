@@ -50,6 +50,20 @@ namespace uhlig.game.services.Services
             return new RoundResponseViewModel(round);
         }
 
+        public JoinRoundResponseViewModel JoinRound(Guid roundId, Guid playerId)
+        {
+            if (!_roundRepository.Exists(roundId))
+                throw new ArgumentException("Rodada não encontrada!");
+            
+            if(!_playerRepository.Exists(playerId))
+                throw new ArgumentException("Player não encontrado!");
+
+            var roundPlayer = new RoundPlayerEntity(roundId, playerId);
+            _roundPlayerRepository.Insert(roundPlayer);
+
+            return new JoinRoundResponseViewModel(){Success = true};
+        }
+
         public RoundPhrasesResponseViewModel RoundPhrases(Guid id)
         {
             var round = _roundRepository.GetById(id);

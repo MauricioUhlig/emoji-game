@@ -8,7 +8,7 @@ namespace uhlig.game.domain.ViewModels.Game.Response
 
         public NewGameResponseViewModel(Guid roomId, Guid playerId, string roomCode)
         {
-            RoomId = RoomId;
+            RoomId = roomId;
             PlayerId = playerId;
             RoomCode = roomCode;
         }

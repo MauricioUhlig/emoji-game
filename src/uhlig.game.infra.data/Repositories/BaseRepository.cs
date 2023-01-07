@@ -20,14 +20,17 @@ namespace uhlig.game.infra.data.Repositories
         public void Insert(T entity)
         {
             Set.Add(entity);
+            Commit();
         }
         public void Update(T entity)
         {
             Set.Update(entity);
+            Commit();
         }
         public void Delete(T entity)
         {
             Set.Remove(entity);
+            Commit();
         }
         public void Delete(Guid id)
         {
@@ -36,6 +39,7 @@ namespace uhlig.game.infra.data.Repositories
 #nullable disable
             this.Delete(entity);
 #nullable enable
+            Commit();
         }
         public T? GetById(Guid id)
         {
@@ -50,6 +54,8 @@ namespace uhlig.game.infra.data.Repositories
         {
             return (IEnumerable<T>)Set.AsNoTracking().Where(predicate).ToList();
         }
+
+        private void Commit() => _context.SaveChanges();
 
     }
 }

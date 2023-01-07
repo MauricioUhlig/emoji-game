@@ -36,6 +36,7 @@ namespace uhlig.game.services.Services
         {
             var room = new RoomEntity(false);
             _roomRepository.Insert(room);
+            
 
             var player = new PlayerEntity(newRoom.UserName);
             _playerRepository.Insert(player);

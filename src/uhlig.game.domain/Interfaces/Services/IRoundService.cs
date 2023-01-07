@@ -9,7 +9,7 @@ namespace uhlig.game.domain.Interfaces.Services
         public RoundResponseViewModel GetLastRoundByRoomId(Guid roomId);
         public RoundResponseViewModel CreateNewRoundByRoomId(Guid roomId);
         public RoundListResponseViewModel GetAllRoundsByRoomId(Guid roomId);
-        
+        public JoinRoundResponseViewModel JoinRound(Guid roundId, Guid playerId);
         public RoundPhrasesResponseViewModel RoundPhrases(Guid id);
         public RoundResultResponseViewModel RoundResult(Guid id);
         public SubmitResponseViewModel Submit(NewPhraseRequestViewModel submit);

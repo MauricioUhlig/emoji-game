@@ -29,7 +29,12 @@ namespace uhlig.game.api.Controllers
         {
             return Result(_roundService.GetAllRoundsByRoomId(roomId));
         }
-        
+        [HttpGet("{id:guid}/join")]
+        public IActionResult JoinRound(Guid id, [FromQuery] Guid playerId)
+        {
+            return Result(_roundService.JoinRound(id, playerId));
+        }
+
         [HttpGet("{id:guid}/phrases")]
         public IActionResult RoundPhrases(Guid id)
         {
