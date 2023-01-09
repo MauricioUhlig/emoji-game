@@ -36,9 +36,18 @@ namespace uhlig.game.services.Services
             return new RoundResponseViewModel(round);
         }
 
-        public RoundListResponseViewModel GetAllRoundsByRoomId(Guid roomId)
+        public IEnumerable<RoundResponseViewModel> GetAllRoundsByRoomId(Guid roomId)
         {
-            throw new NotImplementedException();
+            var roundEntityList = _roundRepository.GetByExpression(x => x.RoomId == roomId);
+            if (roundEntityList == null)
+                throw new KeyNotFoundException();
+
+            var result = new List<RoundResponseViewModel>();
+            foreach (var item in roundEntityList)
+            {
+                result.Add(new RoundResponseViewModel(item.Id, item.RoomId, item.Emojis, item.StartAt, item.TotalSeconds));
+            }
+            return result;
         }
 
         public RoundResponseViewModel GetLastRoundByRoomId(Guid roomId)
@@ -54,14 +63,14 @@ namespace uhlig.game.services.Services
         {
             if (!_roundRepository.Exists(roundId))
                 throw new ArgumentException("Rodada não encontrada!");
-            
-            if(!_playerRepository.Exists(playerId))
+
+            if (!_playerRepository.Exists(playerId))
                 throw new ArgumentException("Player não encontrado!");
 
             var roundPlayer = new RoundPlayerEntity(roundId, playerId);
             _roundPlayerRepository.Insert(roundPlayer);
 
-            return new JoinRoundResponseViewModel(){Success = true};
+            return new JoinRoundResponseViewModel() { Success = true };
         }
 
         public RoundPhrasesResponseViewModel RoundPhrases(Guid id)
@@ -87,13 +96,39 @@ namespace uhlig.game.services.Services
                     playerPhrases.Add(playerPhrase);
                 }
             }
-            
+
             return new RoundPhrasesResponseViewModel(round, playerPhrases);
         }
 
         public RoundResultResponseViewModel RoundResult(Guid id)
         {
-            throw new NotImplementedException();
+            var round = _roundRepository.GetById(id);
+            if (round == null)
+                throw new ArgumentException("Rodada não encontrada!");
+
+
+            var roundPlayers = _roundPlayerRepository.GetByExpression(x => x.RoundId == id);
+
+            if (roundPlayers == null || roundPlayers.Count() == 0)
+                throw new ArgumentException("Não existe players nesta rodada!");
+
+            var playerPhrases = new List<PlayerPhraseResponseViewModel>();
+            foreach (var roundPlayer in roundPlayers)
+            {
+                var phrase = _roundPlayerPhraseRepository.GetByExpression(x => x.RoundPlayerId == roundPlayer.Id)?.FirstOrDefault();
+                if (phrase != null)
+                {
+                    var player = _playerRepository.GetById(roundPlayer.PlayerId);
+                    if (player == null)
+                        throw new ArgumentNullException();
+
+                    // TODO: Implementar pontuações
+                    var playerPhrase = new PlayerPhraseResponseViewModel(player.Name, phrase.Phrase, 10, player.Score);
+                    playerPhrases.Add(playerPhrase);
+                }
+            }
+
+            return new RoundResultResponseViewModel(round, playerPhrases);
         }
 
         public SubmitResponseViewModel Submit(NewPhraseRequestViewModel submit)

@@ -47,6 +47,7 @@ public class RoundServiceTest
         var round = _roundService.GetAllRoundsByRoomId(roomId);
         // Assert 
         Assert.NotNull(round);
+        Assert.Single(round);
 
     }
     [Theory]
@@ -67,7 +68,7 @@ public class RoundServiceTest
     public void TestRoundResult()
     {
         // Arrange
-        var roundId = Guid.Empty;
+        var roundId = new Guid("10de598e-5bfd-4c6c-95d7-a64c83a5fdf1");
         // Act
         var round = _roundService.RoundResult(roundId);
         // Assert 

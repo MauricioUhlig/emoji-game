@@ -12,16 +12,13 @@ namespace uhlig.game.domain.ViewModels.Round.Response
         public int? WinScore { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int? TotalScore { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public byte? Order { get; set; }
 
-        public PlayerPhraseResponseViewModel(string name, string phrase, int winScore, int totalScore, byte order)
+        public PlayerPhraseResponseViewModel(string name, string phrase, int winScore, int totalScore)
         {
             Name = name;
             Phrase = phrase;
             WinScore = winScore;
             TotalScore = totalScore;
-            Order = order;
         }
         public PlayerPhraseResponseViewModel(string name, string phrase)
         {
