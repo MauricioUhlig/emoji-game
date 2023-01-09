@@ -9,7 +9,7 @@ namespace uhlig.game.infra.crosscutting.DependencyInjection
         public static IServiceCollection AddDbConfiguration(this IServiceCollection service)
         {
             service.AddDbContext<EmojiGameContext>(options =>
-                options.UseInMemoryDatabase(databaseName: "EmojiGame")
+                options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             );
             return service;
         }
