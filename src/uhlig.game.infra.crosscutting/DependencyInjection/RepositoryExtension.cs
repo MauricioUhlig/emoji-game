@@ -9,7 +9,7 @@ namespace uhlig.game.infra.crosscutting.DependencyInjection
         public static IServiceCollection AddRepository(this IServiceCollection services)
         {
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            //services.AddScoped<IBuyRepository, BuyRepository>();
+            services.AddScoped<IRoundPhraseRepository, RoundPhraseRepository>();
             return services;
         }
     }

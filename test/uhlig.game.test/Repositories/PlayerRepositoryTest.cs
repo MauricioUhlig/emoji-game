@@ -63,12 +63,12 @@ public class PlayerRepositoryTes
             throw new ArgumentNullException("Player não encontrado!");
 
         //Act
-        player.SetScore(1000);
+        player.AddScore(1);
         _repository.Update(player);
         var _player = _repository.GetById(id);
 
         //Assert
-        Assert.Equal(1000, _player?.Score);
+        Assert.Equal(1, _player?.Score);
         Assert.Equivalent(player,_player);
     }
 }

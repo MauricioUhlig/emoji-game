@@ -11,12 +11,18 @@ namespace uhlig.game.domain.Entities
 
             Score = 0;
         }
-          public PlayerEntity(Guid id, string name, int score) : base(id)
+        public PlayerEntity(Guid id, string name, int score) : base(id)
         {
             Name = name;
             Score = score;
         }
 
-        public void SetScore(int score) => Score = score;
+        public void AddScore(int score)
+        {
+            lock (this)
+            {
+                Score += score;
+            }
+        }
     }
 }

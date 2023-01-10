@@ -13,13 +13,14 @@ namespace uhlig.game.services.Services
         private readonly IBaseRepository<RoundPlayerEntity> _roundPlayerRepository;
         private readonly IBaseRepository<RoundPlayerPhraseEntity> _roundPlayerPhraseRepository;
         private readonly IBaseRepository<PlayerEntity> _playerRepository;
-
+        private readonly IRoundPhraseRepository _roundPhraseRepository;
         public RoundService(
                 IEmojiService emojiService,
                 IBaseRepository<RoundEntity> roundRepository,
                 IBaseRepository<RoundPlayerEntity> roundPlayerRepository,
                 IBaseRepository<RoundPlayerPhraseEntity> roundPlayerPhraseRepository,
-                IBaseRepository<PlayerEntity> playerRepository
+                IBaseRepository<PlayerEntity> playerRepository,
+                IRoundPhraseRepository roundPhraseRepository
             )
         {
             _emojiService = emojiService;
@@ -27,6 +28,7 @@ namespace uhlig.game.services.Services
             _roundPlayerRepository = roundPlayerRepository;
             _roundPlayerPhraseRepository = roundPlayerPhraseRepository;
             _playerRepository = playerRepository;
+            _roundPhraseRepository = roundPhraseRepository;
         }
 
         public RoundResponseViewModel CreateNewRoundByRoomId(Guid roomId)
@@ -106,26 +108,22 @@ namespace uhlig.game.services.Services
             if (round == null)
                 throw new ArgumentException("Rodada não encontrada!");
 
-
-            var roundPlayers = _roundPlayerRepository.GetByExpression(x => x.RoundId == id);
-
-            if (roundPlayers == null || roundPlayers.Count() == 0)
-                throw new ArgumentException("Não existe players nesta rodada!");
+            var phrases = _roundPhraseRepository.GetAllPhraseByRoundId(id);
+            if (phrases == null)
+                throw new ArgumentException("Nenhuma frase encontrada na rodada!");
 
             var playerPhrases = new List<PlayerPhraseResponseViewModel>();
-            foreach (var roundPlayer in roundPlayers)
+            foreach (var phrase in phrases)
             {
-                var phrase = _roundPlayerPhraseRepository.GetByExpression(x => x.RoundPlayerId == roundPlayer.Id)?.FirstOrDefault();
-                if (phrase != null)
-                {
-                    var player = _playerRepository.GetById(roundPlayer.PlayerId);
-                    if (player == null)
-                        throw new ArgumentNullException();
 
-                    // TODO: Implementar pontuações
-                    var playerPhrase = new PlayerPhraseResponseViewModel(player.Name, phrase.Phrase, 10, player.Score);
-                    playerPhrases.Add(playerPhrase);
-                }
+                var player = _playerRepository.GetById(phrase.PlayerId);
+                if (player == null)
+                    throw new ArgumentNullException();
+
+                // TODO: Implementar pontuações
+                var playerPhrase = new PlayerPhraseResponseViewModel(player.Name, phrase.Phrase, phrase.Votes, player.Score);
+                playerPhrases.Add(playerPhrase);
+
             }
 
             return new RoundResultResponseViewModel(round, playerPhrases);
@@ -148,6 +146,25 @@ namespace uhlig.game.services.Services
             _roundPlayerPhraseRepository.Insert(roundPlayerPhrase);
 
             return new SubmitResponseViewModel() { Success = true };
+        }
+
+        public void Vote(Guid voterId, Guid phraseId)
+        {
+            var phrase = _roundPlayerPhraseRepository.GetById(phraseId);
+            if (phrase == null)
+                throw new KeyNotFoundException();
+
+            var playerId = _roundPhraseRepository.GetPlayerIdByPhraseId(phraseId);
+
+            var player = _playerRepository.GetById(playerId);
+            if (player == null)
+                throw new KeyNotFoundException();
+
+            player.AddScore(1);
+            _playerRepository.Insert(player);
+
+            var vote = new RoundPhraseVotesEntity(phraseId, voterId);
+            _roundPhraseRepository.Insert(vote);
         }
     }
 }

@@ -8,7 +8,7 @@ public class PlayerEntityTest
     {
         // Arrange
         var playerName = "Harry Styles";
-    
+
         var player = new PlayerEntity(playerName);
         // Act
 
@@ -27,8 +27,8 @@ public class PlayerEntityTest
         var score = 50;
         var player = new PlayerEntity(playerName);
         // Act
-        player.SetScore(score);
-        
+        player.AddScore(score);
+
         // Assert 
         Assert.Equal(score, player.Score);
     }
