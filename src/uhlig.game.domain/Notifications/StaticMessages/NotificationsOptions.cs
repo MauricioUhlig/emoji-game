@@ -14,8 +14,9 @@ namespace uhlig.game.domain.Notifications.StaticMessages
         private IEnumerable<Notification> PT_BR()
         {
             var notifications = new List<Notification>();
-            notifications.Append(new Notification("ER001", "Acesso não autorizado!", 403));
-            notifications.Append(new Notification("ER002", "Sala não encontrada!", 400));
+            notifications.Add(new Notification("ER001", "Acesso não autorizado!", 403));
+            notifications.Add(new Notification("ER002", "Sala não encontrada!", 400));
+            notifications.Add(new Notification("ER003", "Nenhuma sala publica encontrada!", 400));
 
             return notifications;
         }

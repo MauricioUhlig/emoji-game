@@ -5,7 +5,7 @@ namespace uhlig.game.domain.Notifications
     public class DomainNotification
     {
         private readonly NotificationsOptions _notificationsOptions;
-        private IEnumerable<Notification> _notifications;
+        private List<Notification> _notifications;
         public DomainNotification(NotificationsOptions notificationsOptions)
         {
             _notificationsOptions = notificationsOptions;
@@ -15,7 +15,7 @@ namespace uhlig.game.domain.Notifications
         {
             var notification = _notifications.Where(x => x.Code == code)?.FirstOrDefault();
             if (notification == null)
-                _notifications.Append(_notificationsOptions.GetNotificationByCode(code));
+                _notifications.Add(_notificationsOptions.GetNotificationByCode(code));
         }
         public bool IsValid()
         {
@@ -25,7 +25,7 @@ namespace uhlig.game.domain.Notifications
 
             return false;
         }
-        public IEnumerable<Notification> GetNotifications() => _notifications;
+        public Dictionary<string, string> GetNotifications() => _notifications.ToDictionary(x => x.Code, x => x.Message);
         public int GetStatusCode() => _notifications.OrderByDescending(x => x.StatusCode)?.FirstOrDefault()?.StatusCode ?? 200;
 
     }

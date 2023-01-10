@@ -3,6 +3,7 @@ using System.Net;
 using System;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
+using uhlig.game.domain.Notifications;
 
 namespace uhlig.game.api.Controllers
 {
@@ -10,89 +11,33 @@ namespace uhlig.game.api.Controllers
     [Route("[controller]")]
     public abstract class ApiController : ControllerBase
     {
-
-        public ApiController()
+        private readonly DomainNotification _domainNotification;
+        public ApiController(DomainNotification domainNotification)
         {
+            _domainNotification = domainNotification;
         }
 
-
+        protected IActionResult Result() => Result("OK");
         protected IActionResult Result<TData>(TData data)
             where TData : class
         {
-            //  if (this.IsValidOperation)
-            {
-                return ResultOk(data);
-            }
-
-            //return ResultErro(data, this.domainNotification.GetNotifications().Select(s => s.Value));
-        }
-
-        protected IActionResult Result()
-        {
-            // if (this.IsValidOperation)
-            {
-                return Ok();
-            }
-
-            // return ResultErro(this.domainNotification.GetNotifications().Select(s => s.Value));
-        }
-
-
-        protected static IActionResult ResultOk<TData>(TData data, IEnumerable<string> messages)
-            where TData : class
-        {
-            return new JsonResult(new ResultJson(data/*, messages*/));
-        }
-
-        protected static IActionResult ResultOk<TData>(TData data)
-            where TData : class
-        {
-            return new JsonResult(new ResultJson(data));
-        }
-
-        private IActionResult ResultErro(IEnumerable<string> messages)
-        {
-            return ResultErro("Erro!", messages);
-        }
-
-        private IActionResult ResultErro<TData>(TData data, IEnumerable<string> messages)
-            where TData : class
-        {
-            return Result((int)HttpStatusCode.BadRequest, data, messages);
-        }
-        private IActionResult Result<TData>(int statusCode, TData data, IEnumerable<string> messages)
-            where TData : class
-        {
-            var result = new JsonResult(new ResultJson(data/*, messages.Distinct()*/));
-            result.StatusCode = statusCode;
+            JsonResult result;
+            if (_domainNotification.IsValid())
+                result = new JsonResult(new ResultJson(data));
+            else
+                result = new JsonResult(new ResultJson(data, _domainNotification.GetNotifications()));
+            result.StatusCode = _domainNotification.GetStatusCode();
             return result;
-
         }
-
-        #region private
-        #endregion
-
-        #region protected
-
-        /*   protected IEnumerable<DomainNotification> Notifications => this.domainNotification.GetNotifications();
-
-                protected bool IsValidOperation => !this.domainNotification.HasNotification();
-
-                protected void NotifyError(string code, string message)
-                {
-                    this.mediator.RaiseEventAsync(new DomainNotification(code, message));
-                }*/
-
-        #endregion
     }
 
     public class ResultJson
     {
         public object Data { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public Dictionary<byte,string>? Errors { get; set; }
+        public Dictionary<string, string>? Errors { get; set; }
 
-        public ResultJson(object data, Dictionary<byte,string> errors)
+        public ResultJson(object data, Dictionary<string, string> errors)
         {
             this.Data = data;
             this.Errors = errors;

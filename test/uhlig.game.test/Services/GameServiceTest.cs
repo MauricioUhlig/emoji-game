@@ -1,4 +1,5 @@
 using uhlig.game.domain.Interfaces.Services;
+using uhlig.game.domain.Notifications;
 using uhlig.game.domain.ViewModels.Game.Request;
 
 namespace uhlig.game.test.Service;
@@ -6,9 +7,11 @@ namespace uhlig.game.test.Service;
 public class GameServiceTest
 {
     private readonly IGameService _gameService;
-    public GameServiceTest(IGameService gameService)
+    private readonly DomainNotification _domainNotification;
+    public GameServiceTest(IGameService gameService, DomainNotification domainNotification)
     {
         _gameService = gameService;
+        _domainNotification = domainNotification;
     }
     [Fact]
     public void TestNewGame()
@@ -29,14 +32,18 @@ public class GameServiceTest
         // Arrange
         var room = new JoinRoomRequestViewModel(name, code);
         // Act
+        var game = _gameService.JoinGame(room);
+        // Assert 
         if (exists)
         {
-            var game = _gameService.JoinGame(room);
-            // Assert 
             Assert.NotNull(game);
+            Assert.True(_domainNotification.IsValid());
         }
         else
-            Assert.Throws<ArgumentNullException>(() => _gameService.JoinGame(room));
+        {
+            Assert.Null(game);
+            Assert.False(_domainNotification.IsValid());
+        }
     }
     [Fact]
     public void TestRandomGame()

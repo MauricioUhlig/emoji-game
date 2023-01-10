@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using uhlig.game.domain.Interfaces.Services;
+using uhlig.game.domain.Notifications;
 using uhlig.game.domain.ViewModels.Round.Request;
 
 namespace uhlig.game.api.Controllers
@@ -7,7 +8,7 @@ namespace uhlig.game.api.Controllers
     public class RoundController : ApiController
     {
         private readonly IRoundService _roundService;
-        public RoundController(IRoundService roundService)
+        public RoundController(IRoundService roundService, DomainNotification domainNotification) :base(domainNotification)
         {
             _roundService = roundService;
         }
