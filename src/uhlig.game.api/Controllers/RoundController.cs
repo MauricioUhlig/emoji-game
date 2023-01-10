@@ -52,5 +52,13 @@ namespace uhlig.game.api.Controllers
         {
             return Result(_roundService.Submit(submit));
         }
+
+        [HttpGet("{id:guid}/vote")]
+        public IActionResult Vote([FromQuery] Guid phraseId)
+        {
+            // TODO: Pegar o id do player que está votando pelo token
+            _roundService.Vote(Guid.Empty, phraseId);
+            return Result();
+        }
     }
 }
