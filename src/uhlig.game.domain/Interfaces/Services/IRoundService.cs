@@ -13,6 +13,6 @@ namespace uhlig.game.domain.Interfaces.Services
         public RoundPhrasesResponseViewModel RoundPhrases(Guid id);
         public RoundResultResponseViewModel RoundResult(Guid id);
         public SubmitResponseViewModel Submit(NewPhraseRequestViewModel submit);
-        public void Vote(Guid voterId, Guid phraseId);
+        public bool Vote(Guid voterId, Guid phraseId);
     }
 }

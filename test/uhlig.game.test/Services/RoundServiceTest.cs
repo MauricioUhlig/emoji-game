@@ -84,6 +84,17 @@ public class RoundServiceTest
         var round = _roundService.RoundPhrases(roundId);
         // Assert 
         Assert.NotNull(round);
-
     }
+    [Fact]
+    public void TestVote()
+    {
+        // Arrange
+        var roundPhraseId = new Guid("9031e8c3-9452-4087-8189-fb380a7f255a");
+        var voterId = new Guid("bfce80db-3143-4594-91f2-7e1a74fa3b19");
+        // Act
+        var success = _roundService.Vote(voterId, roundPhraseId);
+        // Assert 
+        Assert.True(success);
+    }
+
 }

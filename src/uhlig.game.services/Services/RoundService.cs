@@ -148,7 +148,7 @@ namespace uhlig.game.services.Services
             return new SubmitResponseViewModel() { Success = true };
         }
 
-        public void Vote(Guid voterId, Guid phraseId)
+        public bool Vote(Guid voterId, Guid phraseId)
         {
             var phrase = _roundPlayerPhraseRepository.GetById(phraseId);
             if (phrase == null)
@@ -161,10 +161,12 @@ namespace uhlig.game.services.Services
                 throw new KeyNotFoundException();
 
             player.AddScore(1);
-            _playerRepository.Insert(player);
+            _playerRepository.Update(player);
 
             var vote = new RoundPhraseVotesEntity(phraseId, voterId);
             _roundPhraseRepository.Insert(vote);
+
+            return true;
         }
     }
 }
