@@ -15,6 +15,7 @@ namespace uhlig.game.infra.data.Context
         public DbSet<RoundEntity> Rounds { get; set; }
         public DbSet<RoundPlayerEntity> RoundPlayer { get; set; }
         public DbSet<RoundPlayerPhraseEntity> RoundPlayerPhrases { get; set; }
+        public DbSet<RoundPhraseVotesEntity> RoundPhraseVotes { get; set; }
 #nullable enable
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +39,11 @@ namespace uhlig.game.infra.data.Context
                 .HasOne(x => x.RoundPlayer)
                 .WithMany()
                 .HasForeignKey(x => x.RoundPlayerId);
+
+            modelBuilder.Entity<RoundPhraseVotesEntity>()
+                .HasOne(x => x.RoundPlayerPhrase)
+                .WithMany()
+                .HasForeignKey(x => x.RoundPlayerPhraseId);
 
             //seeds
             modelBuilder.Entity<PlayerEntity>()

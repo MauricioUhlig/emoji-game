@@ -7,6 +7,7 @@ namespace uhlig.game.domain.Entities
         public string Phrase { get; set; }
 
         public RoundPlayerEntity? RoundPlayer { get; set; }
+        public IEnumerable<RoundPhraseVotesEntity>? RoundPhraseVotes { get; set; }
 
         public RoundPlayerPhraseEntity(Guid roundPlayerId, string phrase) : base()
         {
