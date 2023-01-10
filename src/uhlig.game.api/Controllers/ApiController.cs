@@ -17,7 +17,12 @@ namespace uhlig.game.api.Controllers
             _domainNotification = domainNotification;
         }
 
-        protected IActionResult Result() => Result("OK");
+        protected IActionResult Result()
+        {
+            if (_domainNotification.IsValid())
+                return Result("OK");
+            return Result("Error");
+        }
         protected IActionResult Result<TData>(TData data)
             where TData : class
         {
