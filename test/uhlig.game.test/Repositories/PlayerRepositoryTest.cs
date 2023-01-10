@@ -68,7 +68,7 @@ public class PlayerRepositoryTes
         var _player = _repository.GetById(id);
 
         //Assert
-        Assert.Equal(1, _player?.Score);
-        Assert.Equivalent(player,_player);
+        Assert.Equal(551, _player?.Score);
+        Assert.Equivalent(player, _player);
     }
 }
