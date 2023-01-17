@@ -1,6 +1,7 @@
 using uhlig.game.domain.Entities;
 using uhlig.game.domain.Interfaces.Repositories;
 using uhlig.game.domain.Interfaces.Services;
+using uhlig.game.domain.Notifications;
 using uhlig.game.domain.ViewModels.Round.Request;
 using uhlig.game.domain.ViewModels.Round.Response;
 
@@ -14,13 +15,15 @@ namespace uhlig.game.services.Services
         private readonly IBaseRepository<RoundPlayerPhraseEntity> _roundPlayerPhraseRepository;
         private readonly IBaseRepository<PlayerEntity> _playerRepository;
         private readonly IRoundPhraseRepository _roundPhraseRepository;
+        private readonly DomainNotification _domainNotification;
         public RoundService(
                 IEmojiService emojiService,
                 IBaseRepository<RoundEntity> roundRepository,
                 IBaseRepository<RoundPlayerEntity> roundPlayerRepository,
                 IBaseRepository<RoundPlayerPhraseEntity> roundPlayerPhraseRepository,
                 IBaseRepository<PlayerEntity> playerRepository,
-                IRoundPhraseRepository roundPhraseRepository
+                IRoundPhraseRepository roundPhraseRepository,
+                DomainNotification domainNotification
             )
         {
             _emojiService = emojiService;
@@ -29,6 +32,7 @@ namespace uhlig.game.services.Services
             _roundPlayerPhraseRepository = roundPlayerPhraseRepository;
             _playerRepository = playerRepository;
             _roundPhraseRepository = roundPhraseRepository;
+            _domainNotification = domainNotification;
         }
 
         public RoundResponseViewModel CreateNewRoundByRoomId(Guid roomId)
@@ -38,11 +42,14 @@ namespace uhlig.game.services.Services
             return new RoundResponseViewModel(round);
         }
 
-        public IEnumerable<RoundResponseViewModel> GetAllRoundsByRoomId(Guid roomId)
+        public IEnumerable<RoundResponseViewModel>? GetAllRoundsByRoomId(Guid roomId)
         {
             var roundEntityList = _roundRepository.GetByExpression(x => x.RoomId == roomId);
             if (roundEntityList == null)
-                throw new KeyNotFoundException();
+            {
+                _domainNotification.AddNotification("VL001");
+                return null;
+            }
 
             var result = new List<RoundResponseViewModel>();
             foreach (var item in roundEntityList)
@@ -52,22 +59,31 @@ namespace uhlig.game.services.Services
             return result;
         }
 
-        public RoundResponseViewModel GetLastRoundByRoomId(Guid roomId)
+        public RoundResponseViewModel? GetLastRoundByRoomId(Guid roomId)
         {
             var round = _roundRepository.GetByExpression(x => x.RoomId == roomId)?.OrderByDescending(o => o.StartAt).FirstOrDefault();
             if (round == null)
-                throw new ArgumentNullException("Nenhuma rodada encontrada para sua sala");
+            {
+                _domainNotification.AddNotification("VL002");
+                return null;
+            }
 
             return new RoundResponseViewModel(round);
         }
 
-        public JoinRoundResponseViewModel JoinRound(Guid roundId, Guid playerId)
+        public JoinRoundResponseViewModel? JoinRound(Guid roundId, Guid playerId)
         {
             if (!_roundRepository.Exists(roundId))
-                throw new ArgumentException("Rodada não encontrada!");
+            {
+                _domainNotification.AddNotification("ER004");
+                return null;
+            }
 
             if (!_playerRepository.Exists(playerId))
-                throw new ArgumentException("Player não encontrado!");
+            {
+                _domainNotification.AddNotification("ER005");
+                return null;
+            }
 
             var roundPlayer = new RoundPlayerEntity(roundId, playerId);
             _roundPlayerRepository.Insert(roundPlayer);
@@ -75,17 +91,23 @@ namespace uhlig.game.services.Services
             return new JoinRoundResponseViewModel() { Success = true };
         }
 
-        public RoundPhrasesResponseViewModel RoundPhrases(Guid id)
+        public RoundPhrasesResponseViewModel? RoundPhrases(Guid id)
         {
             var round = _roundRepository.GetById(id);
             if (round == null)
-                throw new ArgumentException("Rodada não encontrada!");
+            {
+                _domainNotification.AddNotification("ER004");
+                return null;
+            }
 
 
             var roundPlayers = _roundPlayerRepository.GetByExpression(x => x.RoundId == id);
 
             if (roundPlayers == null || roundPlayers.Count() == 0)
-                throw new ArgumentException("Não existe players nesta rodada!");
+            {
+                _domainNotification.AddNotification("ER006");
+                return null;
+            }
 
             var playerPhrases = new List<PlayerPhraseResponseViewModel>();
             foreach (var roundPlayer in roundPlayers)
@@ -102,15 +124,21 @@ namespace uhlig.game.services.Services
             return new RoundPhrasesResponseViewModel(round, playerPhrases);
         }
 
-        public RoundResultResponseViewModel RoundResult(Guid id)
+        public RoundResultResponseViewModel? RoundResult(Guid id)
         {
             var round = _roundRepository.GetById(id);
             if (round == null)
-                throw new ArgumentException("Rodada não encontrada!");
+            {
+                _domainNotification.AddNotification("ER004");
+                return null;
+            }
 
             var phrases = _roundPhraseRepository.GetAllPhraseByRoundId(id);
             if (phrases == null)
-                throw new ArgumentException("Nenhuma frase encontrada na rodada!");
+            {
+                _domainNotification.AddNotification("ER007");
+                return null;
+            }
 
             var playerPhrases = new List<PlayerPhraseResponseViewModel>();
             foreach (var phrase in phrases)
@@ -152,13 +180,20 @@ namespace uhlig.game.services.Services
         {
             var phrase = _roundPlayerPhraseRepository.GetById(phraseId);
             if (phrase == null)
-                throw new KeyNotFoundException();
+            {
+                _domainNotification.AddNotification("ER000");
+                return false;
+            }
+
 
             var playerId = _roundPhraseRepository.GetPlayerIdByPhraseId(phraseId);
 
             var player = _playerRepository.GetById(playerId);
             if (player == null)
-                throw new KeyNotFoundException();
+            {
+                _domainNotification.AddNotification("ER000");
+                return false;
+            }
 
             player.AddScore(1);
             _playerRepository.Update(player);

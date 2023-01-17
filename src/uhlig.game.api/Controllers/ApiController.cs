@@ -19,11 +19,9 @@ namespace uhlig.game.api.Controllers
 
         protected IActionResult Result()
         {
-            if (_domainNotification.IsValid())
-                return Result("OK");
-            return Result("Error");
+            return Result((object?)null);
         }
-        protected IActionResult Result<TData>(TData data)
+        protected IActionResult Result<TData>(TData? data)
             where TData : class
         {
             JsonResult result;
@@ -38,16 +36,16 @@ namespace uhlig.game.api.Controllers
 
     public class ResultJson
     {
-        public object Data { get; set; }
+        public object? Data { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public Dictionary<string, string>? Errors { get; set; }
 
-        public ResultJson(object data, Dictionary<string, string> errors)
+        public ResultJson(object? data, Dictionary<string, string> errors)
         {
             this.Data = data;
             this.Errors = errors;
         }
-        public ResultJson(object data)
+        public ResultJson(object? data)
         {
             this.Data = data;
         }

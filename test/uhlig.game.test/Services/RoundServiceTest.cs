@@ -1,4 +1,5 @@
 using uhlig.game.domain.Interfaces.Services;
+using uhlig.game.domain.Notifications;
 using uhlig.game.domain.ViewModels.Round.Request;
 
 namespace uhlig.game.test.Service;
@@ -6,9 +7,11 @@ namespace uhlig.game.test.Service;
 public class RoundServiceTest
 {
     private readonly IRoundService _roundService;
-    public RoundServiceTest(IRoundService roundService)
+    private readonly DomainNotification _domainNotification;
+    public RoundServiceTest(IRoundService roundService, DomainNotification domainNotification)
     {
         _roundService = roundService;
+        _domainNotification = domainNotification;
     }
     [Fact]
     public void TestNewRound()
@@ -26,17 +29,21 @@ public class RoundServiceTest
     public void TestGetLastRoundByRoomId(Guid id, bool exists)
     {
         // Arrange
+        var round = _roundService.GetLastRoundByRoomId(id);
 
         // Act
         if (exists)
         {
-            var round = _roundService.GetLastRoundByRoomId(id);
             // Assert 
             Assert.NotNull(round);
             Assert.NotEmpty(round.Emojis);
+            Assert.True(_domainNotification.IsValid());
         }
         else
-            Assert.Throws<ArgumentNullException>(() => _roundService.GetLastRoundByRoomId(id));
+        {
+            Assert.Null(round);
+            Assert.False(_domainNotification.IsValid());
+        }
     }
     [Fact]
     public void TestGetAllRoundsByRoomId()
