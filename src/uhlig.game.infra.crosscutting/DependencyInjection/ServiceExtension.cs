@@ -13,6 +13,7 @@ namespace uhlig.game.infra.crosscutting.DependencyInjection
             services.AddScoped<IEmojiService, EmojiService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IRoundService, RoundService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<NotificationsOptions>(x => new NotificationsOptions("pt-br"));
             services.AddScoped<DomainNotification>();
 

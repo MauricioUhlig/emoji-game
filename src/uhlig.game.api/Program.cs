@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using uhlig.game.infra.crosscutting.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,27 @@ builder.Services.AddDbConfiguration();
 builder.Services.AddRepository();
 builder.Services.AddServices();
 
+var privateKey = builder.Configuration["SecretToken"] ?? "QLiYhE2RkjEd%67b6fQymMu7^&ncghdZoLoSddAqD5Kt84FEqmLjLh";
+var key = Encoding.ASCII.GetBytes(privateKey);
+
+builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +48,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

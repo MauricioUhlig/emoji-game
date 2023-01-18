@@ -5,11 +5,13 @@ using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using uhlig.game.domain.Notifications;
 using uhlig.game.domain.Notifications.StaticMessages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace uhlig.game.api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public abstract class ApiController : ControllerBase
     {
         private readonly DomainNotification _domainNotification;

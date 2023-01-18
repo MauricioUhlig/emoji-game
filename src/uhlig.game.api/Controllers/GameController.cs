@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using uhlig.game.domain.Interfaces.Services;
 using uhlig.game.domain.Notifications;
@@ -14,6 +15,7 @@ namespace uhlig.game.api.Controllers
         }
 
         [HttpPost("new")]
+        [AllowAnonymous]
         public IActionResult Create(NewGameRequestViewModel newGame)
         {
             var result = _gameService.NewGame(newGame);
@@ -24,6 +26,7 @@ namespace uhlig.game.api.Controllers
         }
 
         [HttpPost("randon")]
+        [AllowAnonymous]
         public IActionResult Randon(RandomRoomRequestViewModel randomRoom)
         {
             var result = _gameService.RandomGame(randomRoom);
@@ -34,6 +37,7 @@ namespace uhlig.game.api.Controllers
         }
 
         [HttpPost("join")]
+        [AllowAnonymous]
         public IActionResult Join(JoinRoomRequestViewModel joinRoom)
         {
             var result = _gameService.JoinGame(joinRoom);

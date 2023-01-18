@@ -11,15 +11,18 @@ namespace uhlig.game.services.Services
     {
         private readonly IBaseRepository<RoomEntity> _roomRepository;
         private readonly IBaseRepository<PlayerEntity> _playerRepository;
+        private readonly ITokenService _tokenService;
         private readonly DomainNotification _domainNotification;
 
         public GameService(
             IBaseRepository<RoomEntity> roomRepository,
             IBaseRepository<PlayerEntity> playerRepository,
+            ITokenService tokenService,
             DomainNotification domainNotification)
         {
             _roomRepository = roomRepository;
             _playerRepository = playerRepository;
+            _tokenService = tokenService;
             _domainNotification = domainNotification;
         }
 
@@ -36,7 +39,7 @@ namespace uhlig.game.services.Services
             var player = new PlayerEntity(joinRoom.UserName);
             _playerRepository.Insert(player);
 
-            return new NewGameResponseViewModel(room.Id, player.Id, room.Code);
+            return new NewGameResponseViewModel(room.Id, player.Id, room.Code, GeneratePlayerToke(player));
         }
 
         public NewGameResponseViewModel NewGame(NewGameRequestViewModel newRoom)
@@ -48,7 +51,7 @@ namespace uhlig.game.services.Services
             var player = new PlayerEntity(newRoom.UserName);
             _playerRepository.Insert(player);
 
-            return new NewGameResponseViewModel(room.Id, player.Id, room.Code);
+            return new NewGameResponseViewModel(room.Id, player.Id, room.Code, GeneratePlayerToke(player));
         }
 
         public NewGameResponseViewModel? RandomGame(RandomRoomRequestViewModel randomRoom)
@@ -63,7 +66,9 @@ namespace uhlig.game.services.Services
             var player = new PlayerEntity(randomRoom.UserName);
             _playerRepository.Insert(player);
 
-            return new NewGameResponseViewModel(room.Id, player.Id, room.Code);
+            return new NewGameResponseViewModel(room.Id, player.Id, room.Code, GeneratePlayerToke(player));
         }
+
+        private string GeneratePlayerToke(PlayerEntity player) => _tokenService.GenerateToken(player, 60);
     }
 }
