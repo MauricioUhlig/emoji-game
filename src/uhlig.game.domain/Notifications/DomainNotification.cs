@@ -25,7 +25,7 @@ namespace uhlig.game.domain.Notifications
 
             return false;
         }
-        public Dictionary<string, string> GetNotifications() => _notifications.ToDictionary(x => x.Code, x => x.Message);
+        public IEnumerable<Notification> GetNotifications() => _notifications;
         public int GetStatusCode() => _notifications.OrderByDescending(x => x.StatusCode)?.FirstOrDefault()?.StatusCode ?? 200;
 
     }

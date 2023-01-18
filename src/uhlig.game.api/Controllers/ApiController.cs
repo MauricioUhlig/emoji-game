@@ -4,6 +4,7 @@ using System;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using uhlig.game.domain.Notifications;
+using uhlig.game.domain.Notifications.StaticMessages;
 
 namespace uhlig.game.api.Controllers
 {
@@ -38,9 +39,9 @@ namespace uhlig.game.api.Controllers
     {
         public object? Data { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public Dictionary<string, string>? Errors { get; set; }
+        public IEnumerable<Notification>? Errors { get; set; }
 
-        public ResultJson(object? data, Dictionary<string, string> errors)
+        public ResultJson(object? data, IEnumerable<Notification> errors)
         {
             this.Data = data;
             this.Errors = errors;

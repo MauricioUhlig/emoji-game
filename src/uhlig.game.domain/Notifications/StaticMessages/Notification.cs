@@ -1,9 +1,12 @@
+using System.Text.Json.Serialization;
+
 namespace uhlig.game.domain.Notifications.StaticMessages
 {
     public class Notification
     {
         public string Code { get; set; }
         public string Message { get; set; }
+        [JsonIgnore]
         public int StatusCode { get; set; }
 
         public Notification(string code, string message, int statusCode)
