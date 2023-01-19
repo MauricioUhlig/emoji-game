@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace uhlig.game.domain.ViewModels.Round.Request
 {
@@ -6,7 +7,7 @@ namespace uhlig.game.domain.ViewModels.Round.Request
     {
         [Required]
         public Guid RoundId { get; private set; }
-        [Required]
+        [JsonIgnore]
         public Guid PlayerId { get; set; }
 
         [Required]

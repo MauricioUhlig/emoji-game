@@ -6,10 +6,15 @@ namespace uhlig.game.domain.Notifications.StaticMessages
 
         public NotificationsOptions(string language = "pt-br")
         {
-            if (language == "pt-br")
-                Notifications = PT_BR();
-
-            Notifications = PT_BR();
+            switch (language)
+            {
+                case "pt-br":
+                    Notifications = PT_BR();
+                    break;
+                default:
+                    Notifications = PT_BR();
+                    break;
+            }
         }
         private IEnumerable<Notification> PT_BR()
         {

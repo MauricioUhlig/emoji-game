@@ -8,9 +8,11 @@ namespace uhlig.game.api.Controllers
     public class RoundController : ApiController
     {
         private readonly IRoundService _roundService;
-        public RoundController(IRoundService roundService, DomainNotification domainNotification) :base(domainNotification)
+        private readonly DomainNotification _domainNotification;
+        public RoundController(IRoundService roundService, DomainNotification domainNotification) : base(domainNotification)
         {
             _roundService = roundService;
+            _domainNotification = domainNotification;
         }
 
         [HttpGet]
@@ -30,10 +32,14 @@ namespace uhlig.game.api.Controllers
         {
             return Result(_roundService.GetAllRoundsByRoomId(roomId));
         }
+
         [HttpGet("{id:guid}/join")]
-        public IActionResult JoinRound(Guid id, [FromQuery] Guid playerId)
+        public IActionResult JoinRound(Guid id)
         {
-            return Result(_roundService.JoinRound(id, playerId));
+            var playerId = GetPlayerId();
+            if (playerId == null)
+                return Result();
+            return Result(_roundService.JoinRound(id, (Guid)playerId));
         }
 
         [HttpGet("{id:guid}/phrases")]
@@ -60,6 +66,17 @@ namespace uhlig.game.api.Controllers
             // TODO: Pegar o id do player que está votando pelo token
             _roundService.Vote(Guid.Empty, phraseId);
             return Result();
+        }
+
+        private Guid? GetPlayerId()
+        {
+            var playerIdString = User.FindFirst("PlayerId")?.Value;
+            if (playerIdString == null)
+            {
+                _domainNotification.AddNotification("ER005");
+                return null;
+            }
+            return Guid.Parse(playerIdString);
         }
     }
 }
